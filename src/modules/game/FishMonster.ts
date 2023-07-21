@@ -9,7 +9,7 @@ export default class FishMonster extends MovingObject {
 		super();
 		this.props = { ...this.props, props };
 
-		this.#awake();
+		this.awake();
 	}
 
 	typeObj = "non-eatable";
@@ -23,7 +23,7 @@ export default class FishMonster extends MovingObject {
 
 	props: any;
 
-	#awake() {
+	awake() {
 		//
 		const app = (window as any).uData?.app as any;
 		if (!app) return;

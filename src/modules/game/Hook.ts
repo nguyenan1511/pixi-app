@@ -8,7 +8,7 @@ export default class Hook extends InteractItem {
 		super({ url: "/images-webp/textures/game/tool-fishing.webp" });
 		this.props = { ...this.props, props };
 
-		this.#awake();
+		this.awake();
 	}
 
 	holder = new PIXI.Container();
@@ -17,7 +17,7 @@ export default class Hook extends InteractItem {
 
 	props: any;
 
-	#awake() {
+	awake() {
 		//
 		const app = (window as any).uData?.app as any;
 		if (!app) return;

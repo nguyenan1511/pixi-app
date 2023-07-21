@@ -10,7 +10,7 @@ export default class MovingObject extends Container {
 		super();
 		this.props = { ...this.props, props };
 
-		this.#awake();
+		this.awake();
 	}
 
 	parentMain!: PIXI.Container;
@@ -33,7 +33,7 @@ export default class MovingObject extends Container {
 
 	direction = 1;
 
-	#awake() {
+	awake() {
 		//
 
 		const app = (window as any).uData?.app as any;
