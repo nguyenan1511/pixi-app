@@ -9,16 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/cannon": "^6.5.2",
     "dat.gui": "^0.7.9",
     "diginext-pixi": "^0.2.6",
     "diginext-utils": "^3.0.8",
     "gsap": "^3.11.5",
     "next": "13.2.4",
+    "pixi.js": "7.1.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "three": "^0.150.1",
-    "three-gltf-loader": "^1.111.0",
-    "pixi.js": "7.1.4"
+    "three-gltf-loader": "^1.111.0"
   },
   "devDependencies": {
     "@types/node": "20.0.0",

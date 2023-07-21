@@ -6,141 +6,146 @@ import * as PIXI from "pixi.js";
 import { Container } from "pixi.js";
 
 export default class MovingObject extends Container {
-	constructor(props?: any) {
-		super();
-		this.props = { ...this.props, props };
+  constructor(props?: any) {
+    super();
+    this.props = { ...this.props, props };
+    this.#awake();
+  }
 
-		this.awake();
-	}
+  parentMain!: PIXI.Container;
 
-	parentMain!: PIXI.Container;
+  canHit = true;
 
-	canHit = true;
+  list!: Array<string>;
 
-	list!: Array<string>;
+  DISTANCE_HIT = 50;
 
-	DISTANCE_HIT = 50;
+  isStop = false;
 
-	isStop = false;
+  props: any;
 
-	props: any;
+  sprite = new PIXI.Sprite();
 
-	sprite = new PIXI.Sprite();
+  speed = randFloat(5, 10);
 
-	speed = randFloat(5, 10);
+  speedRotation = randFloat(0.0013, 0.0016);
 
-	speedRotation = randFloat(0.0013, 0.0016);
+  direction = 1;
 
-	direction = 1;
+  #awake() {
+    //
 
-	awake() {
-		//
+    const app = (window as any).uData?.app as any;
+    if (!app) return;
 
-		const app = (window as any).uData?.app as any;
-		if (!app) return;
+    const stage = app.stage as PIXI.Container;
+    if (!stage) return;
 
-		const stage = app.stage as PIXI.Container;
-		if (!stage) return;
+    stage.on(Event.RESIZE as any, this.resize.bind(this));
 
-		stage.on(Event.RESIZE as any, this.resize.bind(this));
+    this.addChild(this.sprite);
 
-		this.addChild(this.sprite);
+    this.sprite.anchor.set(0.5, 0.5);
 
-		this.sprite.anchor.set(0.5, 0.5);
+    this.reset();
+    // app.ticker.add(this.update.bind(this));
+  }
 
-		this.reset();
-		// app.ticker.add(this.update.bind(this));
-	}
+  async changeTexture(url: string) {
+    //
+    const texture = await PIXI.Texture.fromURL(url);
+    if (!texture) return;
 
-	async changeTexture(url: string) {
-		//
+    this.sprite.texture = texture;
+  }
 
-		const texture = await PIXI.Texture.fromURL(url);
-		if (!texture) return;
+  reset() {
+    const app = (window as any).uData?.app as any;
+    if (!app) return;
 
-		this.sprite.texture = texture;
-	}
+    const renderer = app.renderer as PIXI.Renderer;
+    if (!renderer) return;
 
-	reset() {
-		const app = (window as any).uData?.app as any;
-		if (!app) return;
+    if (!this.list) return;
 
-		const renderer = app.renderer as PIXI.Renderer;
-		if (!renderer) return;
+    this.isStop = false;
 
-		if (!this.list) return;
+    if (this.parentMain) this.parentMain.addChild(this);
 
-		this.isStop = false;
+    this.speed = randFloat(1, 3);
+    this.speedRotation = randFloat(0.0013, 0.0016);
 
-		if (this.parentMain) this.parentMain.addChild(this);
+    this.sprite.scale.set(randFloat(0.2, 0.3));
 
-		this.speed = randFloat(1, 3);
-		this.speedRotation = randFloat(0.0013, 0.0016);
+    const randomTexture = randomElement(this.list);
+    this.changeTexture(randomTexture);
 
-		this.sprite.scale.set(randFloat(0.2, 0.3));
+    this.y = randFloat(
+      (renderer.height / renderer.resolution) * 0.5,
+      (renderer.height / renderer.resolution) * 0.86
+    );
 
-		const randomTexture = randomElement(this.list);
-		this.changeTexture(randomTexture);
+    this.direction = Math.random() < 0.5 ? 1 : -1;
 
-		this.y = randFloat((renderer.height / renderer.resolution) * 0.5, (renderer.height / renderer.resolution) * 0.86);
+    if (this.direction > 0) {
+      this.x = -randFloat(0, (renderer.width / renderer.resolution) * 2);
+    } else {
+      //
+      this.x = randFloat(
+        renderer.width / renderer.resolution,
+        (renderer.width / renderer.resolution) * 2
+      );
+    }
+  }
 
-		this.direction = Math.random() < 0.5 ? 1 : -1;
+  onHit() {
+    this.isStop = true;
 
-		if (this.direction > 0) {
-			this.x = -randFloat(0, (renderer.width / renderer.resolution) * 2);
-		} else {
-			//
-			this.x = randFloat(renderer.width / renderer.resolution, (renderer.width / renderer.resolution) * 2);
-		}
-	}
+    const app = (window as any).uData?.app as any;
+    if (!app) return;
 
-	onHit() {
-		this.isStop = true;
+    const stage = app.stage as PIXI.Container;
+    if (!stage) return;
 
-		const app = (window as any).uData?.app as any;
-		if (!app) return;
+    stage.emit("hit_object" as any, { item: this });
+    //
+  }
 
-		const stage = app.stage as PIXI.Container;
-		if (!stage) return;
+  resize({ data }: any) {
+    console.log("🚀data---->", data);
+  }
 
-		stage.emit("hit_object" as any, { item: this });
-		//
-	}
+  update(_d: any) {
+    //
 
-	resize({ data }: any) {
-		console.log("🚀data---->", data);
-	}
+    const app = (window as any).uData?.app as any;
+    if (!app) return;
 
-	update(_d: any) {
-		//
+    const renderer = app.renderer as PIXI.Renderer;
+    if (!renderer) return;
 
-		const app = (window as any).uData?.app as any;
-		if (!app) return;
+    if (this.isStop && this.canHit) return;
 
-		const renderer = app.renderer as PIXI.Renderer;
-		if (!renderer) return;
+    if (this.direction < 0) if (this.x < -50) this.reset();
+    if (this.direction > 0)
+      if (this.x > renderer.width / renderer.resolution + 50) this.reset();
+    this.x += this.speed * this.direction;
 
-		if (this.isStop && this.canHit) return;
+    this.rotation = Math.sin(+new Date() * this.speedRotation) * 0.6;
 
-		if (this.direction < 0) if (this.x < -50) this.reset();
-		if (this.direction > 0) if (this.x > renderer.width / renderer.resolution + 50) this.reset();
-		this.x += this.speed * this.direction;
+    const hook = (window as any).uData?.hook;
 
-		this.rotation = Math.sin(+new Date() * this.speedRotation) * 0.6;
+    const pos = hook.getGlobalPosition();
 
-		const hook = (window as any).uData?.hook;
+    const dis = distance2Point(pos.x, pos.y, this.x, this.y);
 
-		const pos = hook.getGlobalPosition();
+    if (dis < this.DISTANCE_HIT) {
+      this.onHit();
+    }
 
-		const dis = distance2Point(pos.x, pos.y, this.x, this.y);
-
-		if (dis < this.DISTANCE_HIT) {
-			this.onHit();
-		}
-
-		// console.log("dis :>> ", dis);
-		// console.log("        (window as any).uData?.hook?.position :>> ", (window as any).uData?.hook?.position);
-		// this.x = (renderer.width / renderer.resolution) * 0.5;
-		// this.y = (renderer.height / renderer.resolution) * 0.5;
-	}
+    // console.log("dis :>> ", dis);
+    // console.log("        (window as any).uData?.hook?.position :>> ", (window as any).uData?.hook?.position);
+    // this.x = (renderer.width / renderer.resolution) * 0.5;
+    // this.y = (renderer.height / renderer.resolution) * 0.5;
+  }
 }

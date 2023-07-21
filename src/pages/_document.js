@@ -7,7 +7,6 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <script src="https://sp.zalo.me/plugins/sdk.js"></script>
       </body>
     </Html>
   );

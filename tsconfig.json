@@ -16,13 +16,16 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "target": "es6",
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/component/UICard/UICard.js", "src/pages/sample.js"  ],
+    "**/*.tsx",
+    "src/component/UICard/UICard.js",
+    "src/pages/sample.js"
+  ],
   "exclude": [
     "node_modules"
   ]
