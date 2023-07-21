@@ -1,0 +1,31 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "dat.gui": "^0.7.9",
+    "diginext-pixi": "^0.2.6",
+    "diginext-utils": "^3.0.8",
+    "gsap": "^3.11.5",
+    "next": "13.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "three": "^0.150.1",
+    "three-gltf-loader": "^1.111.0",
+    "pixi.js": "7.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "20.0.0",
+    "@types/react": "18.2.5",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7",
+    "typescript": "5.0.4"
+  }
+}
