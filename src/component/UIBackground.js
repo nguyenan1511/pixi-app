@@ -56,8 +56,9 @@ const UIBackground = (props) => {
 
   return (
     <>
-      <div className="holder fixed left-0 top-0 z-0 h-full w-full bg-[#171520]">{main}</div>
-
+      <div className="holder fixed left-0 top-0 z-0 h-full w-full bg-[#171520]">
+        {main}
+      </div>
       {props.children}
     </>
   );

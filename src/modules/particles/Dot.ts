@@ -3,77 +3,78 @@ import { Container } from "pixi.js";
 import * as PIXI from "pixi.js";
 
 function randomInRange(n: number) {
-	let result = Math.floor(Math.random() * (2 * n - 1)) - n + 1;
-	while (result === 0) {
-		result = Math.floor(Math.random() * (2 * n - 1)) - n + 1;
-	}
-	return result;
+  let result = Math.floor(Math.random() * (2 * n - 1)) - n + 1;
+  while (result === 0) {
+    result = Math.floor(Math.random() * (2 * n - 1)) - n + 1;
+  }
+  return result;
 }
 
 export default class Dot extends Container {
-	constructor(props?: any) {
-		super();
-		this.props = { ...this.props, props };
-		this.awake();
-	}
+  constructor(props?: any) {
+    super();
+    this.props = { ...this.props, props };
+    this.awake();
+  }
 
-	props: any;
+  props: any;
 
-	speed = 5;
+  speed = 5;
 
-	velocity = {
-		x: this.speed,
-		y: this.speed,
-	};
+  velocity = {
+    x: this.speed,
+    y: this.speed,
+  };
 
-	async awake() {
-		// get data app
+  async awake() {
+    // get data app
 
-		// load
-		const texture = await PIXI.Texture.fromURL("/assets/images/glow1.png");
-		if (!texture) return;
+    // load
+    const texture = await PIXI.Texture.fromURL("/assets/images/glow1.png");
+    if (!texture) return;
 
-		const dotImg = PIXI.Sprite.from(texture);
+    const dotImg = PIXI.Sprite.from(texture);
 
-		dotImg.anchor.set(0.5);
+    dotImg.anchor.set(0.5);
 
-		this.addChild(dotImg);
+    this.addChild(dotImg);
 
-		// dotImg.tint = "#FCC201";
-		dotImg.width = 60;
-		dotImg.height = 60;
+    dotImg.tint = 0xfcc201;
 
-		this.reset();
-	}
+    dotImg.width = 60;
+    dotImg.height = 60;
 
-	reset() {
-		this.velocity.x = randomInRange(this.speed);
-		this.velocity.y = randomInRange(this.speed);
+    this.reset();
+  }
 
-		// this.scale.set(Math.random());
-		this.alpha = Math.random();
+  reset() {
+    this.velocity.x = randomInRange(this.speed);
+    this.velocity.y = randomInRange(this.speed);
 
-		this.x = 0;
-		this.y = 0;
-	}
+    // this.scale.set(Math.random());
+    this.alpha = Math.random();
 
-	animate(delta: number) {
-		// get data App
-		const app = (window as any).uData?.app as any;
-		if (!app) return;
+    this.x = 0;
+    this.y = 0;
+  }
 
-		const { renderer } = app;
-		if (!renderer) return;
+  animate(delta: number) {
+    // get data App
+    const app = (window as any).uData?.app as any;
+    if (!app) return;
 
-		const { width, height } = renderer;
+    const { renderer } = app;
+    if (!renderer) return;
 
-		if (Math.abs(this.x) > width / 2 || Math.abs(this.y) > height / 2) {
-			this.reset();
-		}
+    const { width, height } = renderer;
 
-		this.x += this.velocity.x;
-		this.y += this.velocity.y;
+    if (Math.abs(this.x) > width / 2 || Math.abs(this.y) > height / 2) {
+      this.reset();
+    }
 
-		this.alpha += delta / 50;
-	}
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+
+    this.alpha += delta / 50;
+  }
 }

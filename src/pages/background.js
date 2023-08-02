@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import React from "react";
-import ListenerProvider from "../component/context/ListenerProvider";
+import MasterPage from "../component/MasterPage";
 
 const UIBackground = dynamic(() => import("../component/UIBackground"), {
   ssr: false,
@@ -8,10 +8,10 @@ const UIBackground = dynamic(() => import("../component/UIBackground"), {
 
 const background = () => {
   return (
-    <ListenerProvider>
+    <MasterPage>
       <UIBackground />
       {/* game */}
-    </ListenerProvider>
+    </MasterPage>
   );
 };
 

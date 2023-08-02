@@ -22,7 +22,7 @@ export default class FlareLine extends Container {
 		this.flareLine = PIXI.Sprite.from(texture);
 
 		this.flareLine.anchor.y = 0.5;
-		this.flareLine.tint = "#FDE699";
+		this.flareLine.tint = 0xFDE699;
 
 		this.addChild(this.flareLine);
 	}

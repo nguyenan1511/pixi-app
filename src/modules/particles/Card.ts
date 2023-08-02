@@ -53,7 +53,7 @@ export default class Card extends Container {
 		if (!textureLight) return;
 
 		this.light = PIXI.Sprite.from(textureLight);
-		this.light.tint = "#F8F6F0";
+		this.light.tint = 0xF8F6F0;
 		this.addChild(this.light);
 		this.light.anchor.set(0.5);
 
