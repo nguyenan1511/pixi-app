@@ -13,8 +13,8 @@ const UIGame = () => {
     if (!ref?.current) return;
 
     const app = new PIXI.Application({
-      width: 375,
-      height: 667,
+      width: window.innerWidth,
+      height: window.innerHeight,
       background: "#dddddd",
       autoStart: true,
     });
@@ -75,17 +75,16 @@ const UIGame = () => {
 
   useEffect(() => {
     init();
-
     if (typeof window === "undefined") return;
-    document.addEventListener("click", doCatch);
   }, []);
 
   return (
     <>
-      <div className="wrap flex flex-col gap-[40px]">
+      <div className="fixed inset-0 z-2" onClick={doCatch}></div>
+      <div className="wrap flex flex-col gap-[40px] h-[screen] w-[screen]">
         <div
           ref={ref}
-          className="holder h-[667px] w-[375px] resize overflow-auto bg-black"
+          className="holder h-[screen] w-[screen] overflow-auto bg-black"
         ></div>
       </div>
     </>
